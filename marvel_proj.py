@@ -1,5 +1,4 @@
-import os
-import textwrap
+from search_feature import search, print_hero_data, re_prompt
 from marvel import Marvel
 from keys import MARVEL_PUBLIC, MARVEL_PRIVATE
 import requests
@@ -21,9 +20,16 @@ def get_character_json(character_name):
 
 def main():
         
-    results = get_character_json("Black Panther")["data"]["results"][0]
+    print("Welcome to Hero Search!")
+    
+    hero_data = search()
+    
+    print_hero_data(hero_data)
 
-    print_hero_data(results)
+    
+    if True:
+        re_prompt()
+        
 
 if __name__=="__main__":
     main()
