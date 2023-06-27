@@ -1,4 +1,5 @@
 import os
+import textwrap
 from marvel import Marvel
 from keys import MARVEL_PUBLIC, MARVEL_PRIVATE
 import requests
@@ -14,32 +15,48 @@ marvel_data = Marvel(MARVEL_PUBLIC, MARVEL_PRIVATE)
 character_data = marvel_data.characters
 
 
-
 def get_character_json(character_name):
-    return character_data.all(nameStartsWith=character_name)
+    return character_data.all(name=character_name)
 
-def user_input()
-    character_name = input("Please enter the name of the Marvel character you want to search for: ").lower()
-    return character_name
 
-def check_input_string(user_input):
+def json_to_sql(hero_dict):
 
-   try:
-       str(character_name) 
-       return True
-    except ValueError:
-        return False
+    # upload hero dictionary into a dataframe
+    hero_df = pd.DataFrame.from_dict(hero_dict)
 
-    if isinstance(user_input, str):
-        return True
-    else:
-        user_input()
+    # create database engine based on villager database
+    engine = db.create_engine('sqlite:///hero_info.db')
+
+    # convert dataframe to sql database using engine
+    hero_df.to_sql('hero_table', con=engine, if_exists='replace',
+                       index=False)
+
+    # return database conversion engine
+    return engine
+
+
+def print_hero_data(hero_data):
+
+    # print hero's name
+    print(f"\nHero: {hero_data['name']}")
+
+    # print hero description (if it exists)
+    if hero_data['description']:
+        print(f"\nDescription: {hero_data['description']}")
+    
+    # show hero appearance stats
+    print(f"\n{hero_data['name']} has been in:")
+    print(f"    {hero_data['comics']['available']} comics")
+    print(f"    {hero_data['series']['available']} series")
+    print(f"    {hero_data['stories']['available']} stories")
+    print(f"    {hero_data['events']['available']} events")
 
 
 def main():
         
-        print(get_character_json("Hulk"))
-  
+    results = get_character_json("Black Panther")["data"]["results"][0]
+
+    print_hero_data(results)
 
 if __name__=="__main__":
     main()
