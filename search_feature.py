@@ -14,18 +14,37 @@ marvel_data = Marvel(MARVEL_PUBLIC, MARVEL_PRIVATE)
 character_data = marvel_data.characters
 
 
-def get_character_json(character_name):
-    data = character_data.all(name=character_name)
-    return data['data']['results']
-
 def get_result_value(character_name):
     data = character_data.all(name=character_name)
-    if data['data']['results']:
+    result = data['data']['results']
+    if result:
         #print(data)
-        return True
+        return result
     else:
         print("No results found for the character.")
-        return False
+        return None
+
+
+# Title: print_hero_data
+# Description: converts json dictionary to SQL database, returns created engine
+# Input: villager json data (dict)
+# Output / Display: None
+# Output / Returned: engine used to create database
+def print_hero_data(hero_data):
+
+    # print hero's name
+    print(f"\nHero: {hero_data['name']}")
+
+    # print hero description (if it exists)
+    if hero_data['description']:
+        print(f"\nDescription: {hero_data['description']}")
+    
+    # show hero appearance stats
+    print(f"\n{hero_data['name']} has been in:")
+    print(f"    {hero_data['comics']['available']} comics")
+    print(f"    {hero_data['series']['available']} series")
+    print(f"    {hero_data['stories']['available']} stories")
+    print(f"    {hero_data['events']['available']} events")
 
 def re_prompt():
     prompt = input("Do you want to continue [Yes/No] ?").lower()
@@ -35,19 +54,18 @@ def re_prompt():
         search()
 
 def search():
-    print("Welcome to Hero Search!")
-
+    
     value, char_name = check_input_string()
     #print(value)
     if value:
-        if get_result_value(char_name):
+        hero_data = get_result_value(char_name)
+        if hero_data is not None:
             #prints expected value
-            print(get_character_json(char_name))  # remodel to fit expected function
+            return hero_data
         else:
             re_prompt()
     else:
         re_prompt()
-
 
 def check_input_string():
     try:
@@ -62,10 +80,5 @@ def check_input_string():
         print("Only numeric values allowed")
 
 
-def main():
-    search()
 
-
-if __name__ == "__main__":
-    main()
 
