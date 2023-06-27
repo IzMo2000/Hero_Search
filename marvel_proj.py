@@ -1,4 +1,5 @@
 import os
+import textwrap
 from marvel import Marvel
 from keys import MARVEL_PUBLIC, MARVEL_PRIVATE
 import requests
@@ -14,32 +15,15 @@ marvel_data = Marvel(MARVEL_PUBLIC, MARVEL_PRIVATE)
 character_data = marvel_data.characters
 
 
-
 def get_character_json(character_name):
-    return character_data.all(nameStartsWith=character_name)
-
-def user_input()
-    character_name = input("Please enter the name of the Marvel character you want to search for: ").lower()
-    return character_name
-
-def check_input_string(user_input):
-
-   try:
-       str(character_name) 
-       return True
-    except ValueError:
-        return False
-
-    if isinstance(user_input, str):
-        return True
-    else:
-        user_input()
+    return character_data.all(name=character_name)
 
 
 def main():
         
-        print(get_character_json("Hulk"))
-  
+    results = get_character_json("Black Panther")["data"]["results"][0]
+
+    print_hero_data(results)
 
 if __name__=="__main__":
     main()
