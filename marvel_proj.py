@@ -24,11 +24,11 @@ def user_input()
 
 def check_input_string(user_input):
 
-#    try:
-#        str(character_name) 
-#        return True
-#     except ValueError:
-#         return False
+   try:
+       str(character_name) 
+       return True
+    except ValueError:
+        return False
 
     if isinstance(user_input, str):
         return True
@@ -38,7 +38,7 @@ def check_input_string(user_input):
 
 def main():
         
-   check_input_string()   
+        print(get_character_json("Hulk"))
   
 
 if __name__=="__main__":
