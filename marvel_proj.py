@@ -19,39 +19,6 @@ def get_character_json(character_name):
     return character_data.all(name=character_name)
 
 
-def json_to_sql(hero_dict):
-
-    # upload hero dictionary into a dataframe
-    hero_df = pd.DataFrame.from_dict(hero_dict)
-
-    # create database engine based on villager database
-    engine = db.create_engine('sqlite:///hero_info.db')
-
-    # convert dataframe to sql database using engine
-    hero_df.to_sql('hero_table', con=engine, if_exists='replace',
-                       index=False)
-
-    # return database conversion engine
-    return engine
-
-
-def print_hero_data(hero_data):
-
-    # print hero's name
-    print(f"\nHero: {hero_data['name']}")
-
-    # print hero description (if it exists)
-    if hero_data['description']:
-        print(f"\nDescription: {hero_data['description']}")
-    
-    # show hero appearance stats
-    print(f"\n{hero_data['name']} has been in:")
-    print(f"    {hero_data['comics']['available']} comics")
-    print(f"    {hero_data['series']['available']} series")
-    print(f"    {hero_data['stories']['available']} stories")
-    print(f"    {hero_data['events']['available']} events")
-
-
 def main():
         
     results = get_character_json("Black Panther")["data"]["results"][0]
