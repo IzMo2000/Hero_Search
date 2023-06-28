@@ -1,10 +1,9 @@
-from search_feature import search, print_hero_data, re_prompt
+from search_feature import search, print_hero_data, re_prompt,options
 from marvel import Marvel
 from keys import MARVEL_PUBLIC, MARVEL_PRIVATE
 import requests
-import pandas as pd 
+import pandas as pd
 import sqlalchemy as db
-import os
 
 BASE_URL = "https://gateway.marvel.com:443/v1/public/"
 URL = 'https://gateway.marvel.com:443/v1/public/characters?nameStartsWith=ju&apikey=65b63a958c2733164ab372a2d69e038b'
@@ -20,19 +19,11 @@ def get_character_json(character_name):
 
 
 def main():
-        
-    # print title
     print("Welcome to Hero Search!")
-    
-    hero_data = search()[0]
-    
-    print_hero_data(hero_data)
+    options()
 
-    
-    if True:
-        re_prompt()
-        
 
-if __name__=="__main__":
+
+if __name__ == "__main__":
     main()
 
