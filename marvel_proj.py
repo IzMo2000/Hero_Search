@@ -22,7 +22,7 @@ def main():
         
     print("Welcome to Hero Search!")
     
-    hero_data = search()
+    hero_data = search()[0]
     
     print_hero_data(hero_data)
 
