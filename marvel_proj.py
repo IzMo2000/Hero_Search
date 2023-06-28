@@ -4,6 +4,7 @@ from keys import MARVEL_PUBLIC, MARVEL_PRIVATE
 import requests
 import pandas as pd 
 import sqlalchemy as db
+import os
 
 BASE_URL = "https://gateway.marvel.com:443/v1/public/"
 URL = 'https://gateway.marvel.com:443/v1/public/characters?nameStartsWith=ju&apikey=65b63a958c2733164ab372a2d69e038b'
