@@ -5,19 +5,18 @@ import requests
 import pandas as pd
 import sqlalchemy as db
 
-BASE_URL = "https://gateway.marvel.com:443/v1/public/"
-URL = 'https://gateway.marvel.com:443/v1/public/characters?nameStartsWith=ju&apikey=65b63a958c2733164ab372a2d69e038b'
-
 # initialize marvel API
 marvel_data = Marvel(MARVEL_PUBLIC, MARVEL_PRIVATE)
 
 character_data = marvel_data.characters
 
+
 # Title: get_result_value
 # Description: Retrieves Marvel character data using the character name
 # Input: character_name (str) - name of the Marvel character to search for
 # Output / Display: None
-# Output / Returned: result (list) - list of Marvel character data or None if no results found
+# Output / Returned: result (list) - list of Marvel character data or None if
+#                    no results found
 def get_result_value(character_name):
     data = character_data.all(name=character_name)
     result = data['data']['results']
@@ -49,19 +48,20 @@ def print_hero_data(hero_data):
     print(f"    {hero_data['stories']['available']} stories")
     print(f"    {hero_data['events']['available']} events")
 
+
 # Title: re_prompt
 # Description: Prompts the user to continue or quit based on their input
 # Input: None
 # Output / Display: None
 # Output / Returned: None
 # Function: Re-prompts the user for input to continue or quit the program.
-
 def re_prompt():
     prompt = input("Do you want to continue [Yes/No]? ").lower()
     if prompt == 'no':
         quit(0)
     else:
         search()
+
 
 # Title: Default re_prompt
 # Description: Prompts the user to continue or quit based on their input
@@ -78,11 +78,11 @@ def default_re_prompt():
 
 
 # Title: search
-# Description: Searches for a Marvel character based on user input and retrieves hero data.
+# Description: Searches for a Marvel character based on user input
+#              and retrieves hero data.
 # Input: None
 # Output / Display: None
 # Output / Returned: Hero data (dict) if found, None otherwise
-
 def search():
     value, char_name = check_input_string()
     # print(value)
@@ -93,19 +93,21 @@ def search():
             print_hero_data(hero_data[0])
             default_re_prompt()
         else:
-            re_prompt() # Prompts user to re-enter if no hero data is found
+            re_prompt()  # Prompts user to re-enter if no hero data is found
     else:
-        re_prompt() # Prompts user to re-enter if input is invalid or empty
+        re_prompt()  # Prompts user to re-enter if input is invalid or empty
+
 
 # Title: check_input_string
 # Description: Validates user input for Marvel character name
 # Input: None
 # Output / Display: Prints error message if input is invalid
-# Output / Returned: List [bool, str] indicating validity and the character name
-
+# Output / Returned: List [bool, str] indicating validity and
+#                    the character name
 def check_input_string():
     try:
-        user = input("Please enter the name of the Marvel character you want to search for: ")
+        user = input("Please enter the name of the Marvel character you " +
+                     "want to search for: ")
 
         if isinstance(user, str) and user != '':
             return [True, user]
@@ -143,9 +145,10 @@ def start():
     while True:
         search()
 
+
 def start2():
     pass
 
+
 def history_lookup():
     pass
-
