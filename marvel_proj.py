@@ -21,6 +21,7 @@ def get_character_json(character_name):
 
 def main():
         
+    # print title
     print("Welcome to Hero Search!")
     
     hero_data = search()[0]
