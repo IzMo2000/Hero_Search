@@ -4,9 +4,6 @@ import pandas as pd
 import sqlite3
 import sys
 
-BASE_URL = "https://gateway.marvel.com:443/v1/public/"
-URL = 'https://gateway.marvel.com:443/v1/public/characters?nameStartsWith=ju&apikey=65b63a958c2733164ab372a2d69e038b'
-
 # initialize marvel API
 marvel_data = Marvel(MARVEL_PUBLIC, MARVEL_PRIVATE)
 
@@ -121,30 +118,6 @@ def default_re_prompt():
             print('Invalid option')
             default_re_prompt()
 
-"""
-  This function prompts the user to continue or quit the history options.
-
-  Input:
-    None
-
-  Output / Display:
-    A prompt asking the user to continue or quit.
-
-  Output / Returned:
-    None
-"""
-
-def history_re_prompt():
-        prompt = input("Do you want to continue [Yes/No]? ").lower()
-        if prompt == 'no':
-            sys.exit(0)
-        elif prompt == 'yes':
-            history_options()
-        else:
-            print('Invalid option')
-            history_re_prompt()
-
-
 
 """
 Title: Search for hero data
@@ -203,7 +176,7 @@ def check_input_string(user):
 # Output / Returned: None
 def options():
         # Display the menu to the user
-        print('What would you search up?')
+        print('\nWhat would you like to search up?')
         print('We got a set of options just for you! ')
         print('Options: ')
         print('1) Search up a hero')
@@ -395,12 +368,3 @@ def default_display():
             return "No data available."
         else:
             return df
-
-
-# comment each function    -------Done-----
-# sorting based recent input        -------Done-----
-# try and expect on the main options function   -------Done-----
-# check values for re prompt if answer aside from no is entered    -------Done-----
-# check when enter_a particular hero is not in table what to display   -------Done-----
-# capitalize first letter of user input when checking for a specific data of a hero    -------Done-----
-# call the re prompt inside the search_history functions    -------Done-----
