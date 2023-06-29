@@ -1,4 +1,5 @@
 import os
+import sys
 from marvel import Marvel
 from keys import MARVEL_PUBLIC, MARVEL_PRIVATE
 import requests
@@ -34,20 +35,32 @@ def get_result_value(character_name):
 # Input: villager json data (dict)
 # Output / Display: None
 # Output / Returned: engine used to create database
-def print_hero_data(hero_data):
-    # print hero's name
-    print(f"\nHero: {hero_data['name']}")
+def print_hero_data(hero_data, print_check = False):
 
-    # print hero description (if it exists)
-    if hero_data['description']:
-        print(f"\nDescription: {hero_data['description']}")
+    # check for valid hero data
+    if hero_data:
+        # print hero's name
+        print(f"\nHero: {hero_data['name']}")
 
-    # show hero appearance stats
-    print(f"\n{hero_data['name']} has been in:")
-    print(f"    {hero_data['comics']['available']} comics")
-    print(f"    {hero_data['series']['available']} series")
-    print(f"    {hero_data['stories']['available']} stories")
-    print(f"    {hero_data['events']['available']} events")
+        # print hero description (if it exists)
+        if hero_data['description']:
+            print(f"\nDescription: {hero_data['description']}")
+
+        # show hero appearance stats
+        print(f"\n{hero_data['name']} has been in:")
+        print(f"    {hero_data['comics']['available']} comics")
+        print(f"    {hero_data['series']['available']} series")
+        print(f"    {hero_data['stories']['available']} stories")
+        print(f"    {hero_data['events']['available']} events")
+
+        # indicate print success
+        return True
+    
+    # invalid hero data, print error and indicate unsuccessful print
+    else:
+        print("\nERROR collecting hero data, check for Marvel API status")
+
+        return False
 
 
 def hero_stat(hero_data):
@@ -77,7 +90,7 @@ def hero_stat(hero_data):
 def re_prompt():
     prompt = input("Do you want to continue [Yes/No]? ").lower()
     if prompt == 'no':
-        quit(0)
+        sys.exit(0)
     else:
         search()
 
@@ -139,14 +152,17 @@ def check_input_string():
         user = input("Please enter the name of the Marvel character you " +
                      "want to search for: ")
 
-        if isinstance(user, str) and user != '':
-            return [True, user]
-        else:
-            print('No character name entered.')
-            return [False, user]
+        return validate_name(user)
+        
     except Exception as e:
         print("Only numeric values allowed")
 
+def validate_name(name):
+    if isinstance(name, str) and name != '':
+        return [True, name]
+    else:
+        print('No character name entered.')
+        return [False, name]
 
 def options():
     print('What would you search up?')
