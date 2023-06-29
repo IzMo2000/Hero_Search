@@ -1,24 +1,22 @@
-import os
-import sys
 from marvel import Marvel
 from keys import MARVEL_PUBLIC, MARVEL_PRIVATE
-import requests
 import pandas as pd
-import sqlalchemy as db
 import sqlite3
+import sys
+
+BASE_URL = "https://gateway.marvel.com:443/v1/public/"
+URL = 'https://gateway.marvel.com:443/v1/public/characters?nameStartsWith=ju&apikey=65b63a958c2733164ab372a2d69e038b'
 
 # initialize marvel API
 marvel_data = Marvel(MARVEL_PUBLIC, MARVEL_PRIVATE)
 
 character_data = marvel_data.characters
 
-
 # Title: get_result_value
 # Description: Retrieves Marvel character data using the character name
 # Input: character_name (str) - name of the Marvel character to search for
 # Output / Display: None
-# Output / Returned: result (list) - list of Marvel character data or None if
-#                    no results found
+# Output / Returned: result (list) - list of Marvel character data or None if no results found
 def get_result_value(character_name):
     data = character_data.all(name=character_name)
     result = data['data']['results']
@@ -63,6 +61,11 @@ def print_hero_data(hero_data, print_check = False):
         return False
 
 
+# Title: Hero Statistics
+# Description: This function takes the hero data and stores it in a dictionary
+# Input: hero_data (dictionary) - Hero data retrieved from the API
+# Output / Display: None
+# Output / Returned: hero_stats (dictionary) - Calculated statistics for the hero
 def hero_stat(hero_data):
     name = hero_data['name']
     comics = hero_data['comics']['available']
@@ -87,12 +90,17 @@ def hero_stat(hero_data):
 # Output / Display: None
 # Output / Returned: None
 # Function: Re-prompts the user for input to continue or quit the program.
+
 def re_prompt():
     prompt = input("Do you want to continue [Yes/No]? ").lower()
     if prompt == 'no':
         sys.exit(0)
-    else:
+    elif prompt == 'yes':
         search()
+    else:
+        print('Invalid option')
+        re_prompt()
+
 
 
 # Title: Default re_prompt
@@ -104,26 +112,50 @@ def re_prompt():
 def default_re_prompt():
     prompt = input("Do you want to continue [Yes/No]? ").lower()
     if prompt == 'no':
-        quit(0)
-    else:
+        sys.exit(0)
+    elif prompt == 'yes':
         options()
+    else:
+        print('Invalid option')
+        default_re_prompt()
 
+"""
+  This function prompts the user to continue or quit the history options.
 
-# Title: search
-# Description: Searches for a Marvel character based on user input
-#              and retrieves hero data.
-# Input: None
-# Output / Display: None
-# Output / Returned: Hero data (dict) if found, None otherwise
+  Input:
+    None
+
+  Output / Display:
+    A prompt asking the user to continue or quit.
+
+  Output / Returned:
+    None
+"""
 
 def history_re_prompt():
     prompt = input("Do you want to continue [Yes/No]? ").lower()
     if prompt == 'no':
-        quit(0)
-    else:
+        sys.exit(0)
+    elif prompt == 'yes':
         history_options()
+    else:
+        print('Invalid option')
+        history_re_prompt()
 
 
+
+"""
+Title: Search for hero data
+Description: This function searches for hero data based on the user's input.
+Input:
+    * value: The user's input string.
+    * char_name: The name of the hero to search for.
+Output / Display:
+    * If the hero data is found, the function prints the hero's stats in a table format.
+    * If the hero data is not found, the function prompts the user to re-enter their input.
+Output / Returned:
+    * None.
+"""
 def search():
     value, char_name = check_input_string()
     # print(value)
@@ -136,21 +168,21 @@ def search():
             print_hero_data(hero_data)
             default_re_prompt()
         else:
-            re_prompt()  # Prompts user to re-enter if no hero data is found
+            # Prompts user to re-enter if no hero data is found
+            re_prompt()
     else:
-        re_prompt()  # Prompts user to re-enter if input is invalid or empty
-
+        # Prompts user to re-enter if input is invalid or empty
+        re_prompt()
 
 # Title: check_input_string
 # Description: Validates user input for Marvel character name
 # Input: None
 # Output / Display: Prints error message if input is invalid
-# Output / Returned: List [bool, str] indicating validity and
-#                    the character name
+# Output / Returned: List [bool, str] indicating validity and the character name
+
 def check_input_string():
     try:
-        user = input("Please enter the name of the Marvel character you " +
-                     "want to search for: ")
+        user = input("Please enter the name of the Marvel character you want to search for: ")
 
         return validate_name(user)
         
@@ -163,41 +195,58 @@ def validate_name(name):
     else:
         print('No character name entered.')
         return [False, name]
+       
 
+
+# Title: options
+# Description: Prompts the user to select an option and performs the corresponding action.
+# Input: None
+# Output / Display: Prints the available options and error messages if input is invalid.
+# Output / Returned: None
 def options():
+    # Display the menu to the user
     print('What would you search up?')
     print('We got a set of options just for you! ')
     print('Options: ')
     print('1) Search up a hero')
-    print('2) Check names with few characters')
-    print('3) Check Previous search history')
-    print('4) Quit ')
+    print('2) Check Previous search history')
+    print('3) Quit ')
 
     try:
-        option = int(input("Select an option [1/2/3/4] => "))
+        # Prompt the user to enter an option and convert it to an integer
+        option = int(input("Select an option [1/2/3] => "))
+
+        # Check the selected option and perform the corresponding action
         if option == 1:
             start()
         elif option == 2:
-            print('Still a work in progress :(')
-            start2()
+            history_options()
         elif option == 3:
-            history_lookup()
-        elif option == 4:
-            quit(0)
+            sys.exit(0)
         else:
+            # Display an error message for an invalid option and recursively call itself
             print("Invalid option")
             options()
     except ValueError:
+        # Catch the ValueError if the user enters a non-integer value
+        # Display an error message and recursively call itself
         print("Invalid option. Please enter a number.")
         options()
 
+#Title - Start the search function
+#Description - Starts the search function to get data from API
+#input# - None
+#Output - calls search function
 def start():
     while True:
         search()
 
 
-def history_lookup():
-    history_options()
+# Title: History Options
+# Description: This function provides options for managing search history.
+# Input: None
+# Output / Display: Menu options for history management
+# Output / Returned: None
 
 def history_options():
     default_display()
@@ -206,32 +255,37 @@ def history_options():
     print('1) Display entire data')
     print('2) Search more on a particular hero data')
     print('3) Clear history')
-    print('3) Go to main menu')
+    print('4) Go to main menu')
 
     try:
         num = int(input('Please select: '))
 
         if num == 1:
             display_data()
-            default_re_prompt()
+            options()
         elif num == 2:
-            hero_name = input('Enter hero name: ')
+            hero_name = input('Enter hero name: ').capitalize()  # Capitalize the first letter of each word of user input
             display_hero_data(hero_name)
-            default_re_prompt()
+            options()
         elif num == 3:
             clear_data()
-            default_re_prompt()
+            history_options()
         elif num == 4:
-            default_re_prompt()
+            options()
         else:
             print('Invalid Value')
     except ValueError:
         print('Invalid input. Please enter a number.')
-        history_re_prompt()
+        history_options()
 
 def start2():
     pass
 
+# Title: Implement Table
+# Description: Creates a table in the database if it does not exist and inserts the provided hero statistics into the table.
+# Input: Dictionary of hero statistics (stats)
+# Output / Display: None
+# Output / Returned: None
 
 def implement_table(stats):
     conn = sqlite3.connect("hero_data.db")
@@ -261,7 +315,16 @@ def implement_table(stats):
 
     insert_into()
 
-
+"""
+    Title: Display Hero Data
+    Description: This function displays the hero data for the specified hero name.
+    Input:
+        hero_name (str): The name of the hero to display data for.
+    Output / Display:
+        The hero data in a Pandas DataFrame.
+    Output / Returned:
+        None.
+"""
 def display_hero_data(hero_name):
     conn = sqlite3.connect("hero_data.db")
 
@@ -272,8 +335,19 @@ def display_hero_data(hero_name):
     # Close the database connection
     conn.close()
 
-    # Display the hero data
-    print(df)
+    # Check if the DataFrame is empty
+    if df.empty:
+        print(f"No data found for {hero_name}.")
+    else:
+        # Display the hero data
+        print(df)
+
+
+# Title: Clear data from Hero database
+# Description: This function deletes all data from the Hero table in the hero_data.db database.
+# Input: None
+# Output / Display: Prints a message indicating that the history was deleted successfully.
+# Output / Returned: None
 
 def clear_data():
     try:
@@ -293,12 +367,17 @@ def clear_data():
     except sqlite3.Error as e:
         print("Error occurred while deleting data:", e)
 
-
+"""
+    Title: Display Hero Data
+    Description: This function displays the hero data for the specified hero name.
+    Input: hero_name (str): The name of the hero to display data for.
+    Output / Display: The hero data in a Pandas DataFrame.
+    Output / Returned: None.
+"""
 def display_data():
         conn = sqlite3.connect("hero_data.db")
-        cur = conn.cursor()
         # Retrieve the inserted data and display it using pandas
-        sql = pd.read_sql_query("SELECT * FROM Hero", conn)
+        sql = pd.read_sql_query("SELECT * FROM Hero ORDER BY id DESC", conn)
         df = pd.DataFrame(sql, columns=["name", "comics", "series", "stories", "events"])
         if df.empty:
             print("No data available.")
@@ -306,13 +385,18 @@ def display_data():
             print(df)
         conn.close()
 
-
+"""
+    Title: Default Display Function
+    Description: This function connects to the hero_data.db database and retrieves the data from the Hero table. The data is then displayed using pandas.
+    Input: None
+    Output / Display: The data from the Hero table is displayed in a pandas DataFrame.
+    Output / Returned: None
+"""
 def default_display():
     conn = sqlite3.connect("hero_data.db")
-    cur = conn.cursor()
 
     # Retrieve the data from the database and display it using pandas
-    sql = pd.read_sql_query("SELECT * FROM Hero", conn)
+    sql = pd.read_sql_query("SELECT * FROM Hero ORDER BY id DESC", conn)
     df = pd.DataFrame(sql, columns=["name"])
 
     if df.empty:
@@ -323,7 +407,11 @@ def default_display():
     conn.close()
 
 
-# trying putting limit
-# sorting based recent input
-# throw and expect on the main options function
-# check values for re prompt if answer aside from no is entered
+
+#comment each function    -------Done-----
+# sorting based recent input        -------Done-----
+# try and expect on the main options function   -------Done-----
+# check values for re prompt if answer aside from no is entered    -------Done-----
+# check when enter_a particular hero is not in table what to display   -------Done-----
+# capitalize first letter of user input when checking for a specific data of a hero    -------Done-----
+# call the re prompt inside the search_history functions    -------Done-----
