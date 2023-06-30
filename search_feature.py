@@ -13,7 +13,6 @@ import string
 # - `sys`: This module provides access to some variables used.
 # - `string`: This module provides a collection of string functions.
 
-
 # initialize marvel API
 marvel_data = Marvel(MARVEL_PUBLIC, MARVEL_PRIVATE)
 character_data = marvel_data.characters
@@ -25,11 +24,11 @@ character_data = marvel_data.characters
 # Output / Display: None
 # Output / Returned: result (list) - list of Marvel character data or None
 # if no results found
-
 def get_result_value(character_name):
     data = character_data.all(name=character_name)
     result = data['data']['results']
     if result:
+
         # If result data is found, return the first result
         return result[0]
     else:
@@ -43,6 +42,8 @@ def get_result_value(character_name):
 # Input: villager json data (dict)
 # Output / Display: None
 # Output / Returned: engine used to create database
+def print_hero_data(hero_data, print_check=False):
+
 
 def print_hero_data(hero_data, print_check=False):
     # check for valid hero data
@@ -78,7 +79,6 @@ def print_hero_data(hero_data, print_check=False):
 # Output / Display: None
 # Output / Returned: hero_stats (dictionary) - Calculated statistics
 # for the hero
-
 def hero_stat(hero_data):
     # Extract specific values from hero_data dictionary
     name = hero_data['name']
@@ -86,7 +86,6 @@ def hero_stat(hero_data):
     series = hero_data['series']['available']
     stories = hero_data['stories']['available']
     events = hero_data['events']['available']
-
     # Create a new dictionary containing the extracted values
     hero_stats = {
         'name': name,
@@ -96,7 +95,8 @@ def hero_stat(hero_data):
         'events': events
     }
 
-    return hero_stats  # Return the hero_stats dictionary
+    # Return the hero_stats dictionary
+    return hero_stats 
 
 
 # Title: re_prompt
@@ -109,6 +109,7 @@ def hero_stat(hero_data):
 def re_prompt():
     prompt = input("Do you want to continue [Yes/No]? ").lower()
     if prompt == 'no':
+
         # Exit the program with exit code 0
         sys.exit(0)
     elif prompt == 'yes':
@@ -120,9 +121,7 @@ def re_prompt():
         # Prompt the user again for a valid response
         re_prompt()
 
-    # Title: Default re_prompt
-
-
+# Title: Default re_prompt
 # Description: Prompts the user to continue or quit based on their input
 # Input: None
 # Output / Display: None
@@ -131,6 +130,7 @@ def re_prompt():
 def default_re_prompt():
     prompt = input("Do you want to continue [Yes/No]? ").lower()
     if prompt == 'no':
+
         # Exits the program
         sys.exit(0)
     elif prompt == 'yes':
@@ -152,8 +152,6 @@ def default_re_prompt():
 #     If the hero data is not found, the function prompts the user to
 #       re-enter their input.
 # Output / Returned: None
-
-
 def search():
     try:
         user = input("Please enter the name of the Marvel" +
@@ -161,6 +159,7 @@ def search():
     except Exception:
         print("Only numeric values allowed")
     else:
+
         # Check if the input is valid and retrieve the processed input
         value, char_name = check_input_string(user)
         if value:
@@ -247,6 +246,7 @@ def options():
 # Output / Returned: None
 
 def history_options():
+
     # Display default content
     print()
     print(default_display())
@@ -260,6 +260,7 @@ def history_options():
     print('4) Go to main menu')
 
     try:
+
         # Get user input
         num = int(input("Select an option [1/2/3/4] => "))
 
@@ -269,6 +270,7 @@ def history_options():
             options()
         elif num == 2:
             # Display specific hero data
+
             # Capitalize the first letter of each word of user input
             hero_name = input('\nEnter hero name: ')
             hero_name = string.capwords(hero_name)
@@ -276,6 +278,7 @@ def history_options():
             print(display)
             options()
         elif num == 3:
+
             # Clear history
             print(clear_data())
             history_options()
@@ -302,6 +305,7 @@ def implement_table(stats):
     conn = sqlite3.connect("hero_data.db")
     cur = conn.cursor()
 
+
     # Create the Hero table if it doesn't exist
     cur.execute("""
     CREATE TABLE IF NOT EXISTS Hero(
@@ -326,6 +330,7 @@ def implement_table(stats):
                    hero_stats['events']))
         conn.commit()
 
+
     # Call the insert_into function to insert the hero data
     insert_into()
     # Return True to indicate that the table has been implemented
@@ -338,7 +343,6 @@ def implement_table(stats):
 # Input: hero_name (str): The name of the hero to display data for.
 # Output / Display: The hero data in a Pandas DataFrame.
 # Output / Returned: None.
-
 def display_hero_data(hero_name):
     conn = sqlite3.connect("hero_data.db")
 
@@ -367,6 +371,7 @@ def display_hero_data(hero_name):
 
 def clear_data():
     try:
+
         # Connect to the SQLite database
         conn = sqlite3.connect("hero_data.db")
         # Create a cursor object to execute SQL statements
@@ -381,6 +386,7 @@ def clear_data():
         # Close the database connection
         conn.close()
 
+
         # Return a success message
         return "History deleted successfully.  You are safe :) "
     except sqlite3.Error as e:
@@ -394,8 +400,6 @@ def clear_data():
 # Input: hero_name (str): The name of the hero to display data for.
 # Output / Display: The hero data in a Pandas DataFrame.
 # Output / Returned: None.
-
-
 def display_data():
     conn = sqlite3.connect("hero_data.db")
     # Retrieve the inserted data and display it using pandas
@@ -407,6 +411,7 @@ def display_data():
         return "No data available."
     else:
         return df
+
 
 
 # Title: Default Display Function
@@ -428,7 +433,6 @@ def default_display():
 
     # Create a DataFrame from the retrieved data with specified column names
     df = pd.DataFrame(sql, columns=["name"])
-
     # Close the database connection
     conn.close()
 
