@@ -138,7 +138,7 @@ Output / Returned:
 def search():
     try:
         user = input("Please enter the name of the Marvel" +
-                     "character you want to search for: ")
+                     " character you want to search for: ")
     except Exception:
         print("Only numeric values allowed")
     else:
