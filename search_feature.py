@@ -227,7 +227,7 @@ def history_options():
     print()
     print('What would you like to do with your history:')
     print('1) Display entire data')
-    print('2) Search more on a particular hero data')
+    print('2) Display specific hero data')
     print('3) Clear history')
     print('4) Go to main menu')
 
