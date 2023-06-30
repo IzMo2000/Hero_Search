@@ -432,7 +432,7 @@ def default_display():
     # Close the database connection
     conn.close()
 
-    # Check if the DataFrame is empty
+    # Check if the DataFrame is empty or not
     if df.empty:
         # Return a message indicating that no data is available
         return "No data available."
