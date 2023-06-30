@@ -7,7 +7,8 @@ import string
 
 # Import necessary modules and libraries
 # - `marvel`: This module is used for accessing the Marvel API.
-# - `keys`: This module is used to import private keys for the Marvel API authentication.
+# - `keys`: This module is used to import private keys for the Marvel
+#           API authentication.
 # - `pandas`: This library provides data manipulation and analysis tools.
 # - `sqlite3`: This module is used for working with SQLite databases.
 # - `sys`: This module provides access to some variables used.
@@ -42,9 +43,6 @@ def get_result_value(character_name):
 # Input: villager json data (dict)
 # Output / Display: None
 # Output / Returned: engine used to create database
-def print_hero_data(hero_data, print_check=False):
-
-
 def print_hero_data(hero_data, print_check=False):
     # check for valid hero data
     if hero_data:
@@ -96,7 +94,7 @@ def hero_stat(hero_data):
     }
 
     # Return the hero_stats dictionary
-    return hero_stats 
+    return hero_stats
 
 
 # Title: re_prompt
@@ -120,6 +118,7 @@ def re_prompt():
         print('Invalid option')
         # Prompt the user again for a valid response
         re_prompt()
+
 
 # Title: Default re_prompt
 # Description: Prompts the user to continue or quit based on their input
@@ -305,7 +304,6 @@ def implement_table(stats):
     conn = sqlite3.connect("hero_data.db")
     cur = conn.cursor()
 
-
     # Create the Hero table if it doesn't exist
     cur.execute("""
     CREATE TABLE IF NOT EXISTS Hero(
@@ -329,7 +327,6 @@ def implement_table(stats):
                    hero_stats['series'], hero_stats['stories'],
                    hero_stats['events']))
         conn.commit()
-
 
     # Call the insert_into function to insert the hero data
     insert_into()
@@ -386,7 +383,6 @@ def clear_data():
         # Close the database connection
         conn.close()
 
-
         # Return a success message
         return "History deleted successfully.  You are safe :) "
     except sqlite3.Error as e:
@@ -411,7 +407,6 @@ def display_data():
         return "No data available."
     else:
         return df
-
 
 
 # Title: Default Display Function
