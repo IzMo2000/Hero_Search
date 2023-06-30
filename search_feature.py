@@ -3,6 +3,7 @@ from keys import MARVEL_PUBLIC, MARVEL_PRIVATE
 import pandas as pd
 import sqlite3
 import sys
+import string
 
 # initialize marvel API
 marvel_data = Marvel(MARVEL_PUBLIC, MARVEL_PRIVATE)
@@ -185,7 +186,7 @@ def check_input_string(user):
 def options():
     # Display the menu to the user
     print('\nWhat would you like to search up?')
-    print('We got a set of options just for you! ')
+    print('\nWe got a set of options just for you! ')
     print('Options: ')
     print('1) Search up a hero')
     print('2) Check Previous search history')
@@ -221,6 +222,7 @@ def options():
 # Output / Returned: None
 
 def history_options():
+    print()
     print(default_display())
     print()
     print('What would you like to do with your history:')
@@ -230,14 +232,15 @@ def history_options():
     print('4) Go to main menu')
 
     try:
-        num = int(input('Please select: '))
+        num = int(input("Select an option [1/2/3/4] => "))
 
         if num == 1:
             print(display_data())
             options()
         elif num == 2:
             # Capitalize the first letter of each word of user input
-            hero_name = input('Enter hero name: ').capitalize()
+            hero_name = input('\nEnter hero name: ')
+            hero_name = string.capwords(hero_name)
             display = display_hero_data(hero_name)
             print(display)
             options()
@@ -247,9 +250,9 @@ def history_options():
         elif num == 4:
             options()
         else:
-            print('Invalid Value')
+            print('\nInvalid Value')
     except ValueError:
-        print('Invalid input. Please enter a number.')
+        print('\nInvalid input. Please enter a number.')
         history_options()
 
 
