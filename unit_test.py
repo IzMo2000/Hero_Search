@@ -70,7 +70,6 @@ class searchFeature(unittest.TestCase):
         self.assertFalse(default_display().empty)
         clear_data()
         self.assertEqual(default_display(), "No data available.")
-    
 
 
 if __name__ == '__main__':
