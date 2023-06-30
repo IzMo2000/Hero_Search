@@ -9,9 +9,9 @@ character_data = marvel_data.characters
 
 
 # Title: Get Character JSON
-# Description: Retrieves the JSON data for a specific character 
+# Description: Retrieves the JSON data for a specific character
 #              from a data source.
-# Input: character_name (str) - The name of the character 
+# Input: character_name (str) - The name of the character
 #        to search for.
 # Output / Returned: JSON data representing the character.
 # Output / Display: None
