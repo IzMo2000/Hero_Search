@@ -17,3 +17,21 @@ Hero Search is a command line program. You can run Hero Search by entering the f
 This program searches for and displays information for a given Marvel character using the official [Marvel API](https://developer.marvel.com/)
 
 This program can search and store data for marvel characters using the api described above.
+
+The following character data is displayed upon search:
+
+* Name
+* Description (if available)
+* Number of character's appearances in
+    * comics
+    * series
+    * stories
+    * events
+
+And is then stored in a history database (appears as hero_data.db in the program's local directory)
+
+The history database can then be accessed from the main menu, where past search data can be reacquired and displayed.
+
+# Automated Tests
+![Style Check](https://github.com/IzMo2000/Hero_Search/actions/workflows/style_check.yaml/badge.svg)
+![Unit Test](https://github.com/IzMo2000/Hero_Search/actions/workflows/unit_test.yaml/badge.svg)
