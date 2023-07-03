@@ -1,6 +1,8 @@
 from marvel import Marvel
 from keys import MARVEL_PUBLIC, MARVEL_PRIVATE
-from database_utility import implement_table, default_display, display_data, clear_data, display_hero_data
+from database_utility import implement_table, default_display, \
+    display_data, display_hero_data, table_options, \
+    name_and_data, drop_all_tables, is_database_empty
 import sys
 import string
 
@@ -49,6 +51,11 @@ def print_hero_data(hero_data, print_check=False):
         # print hero description (if it exists)
         if hero_data['description']:
             print(f"\nDescription: {hero_data['description']}")
+
+        # print the link to character
+        link = hero_data["urls"][0]["url"]
+        print(f"\nLink: {link}")
+
 
         # show hero appearance stats
         print(f"\n{hero_data['name']} has been in:")
@@ -166,8 +173,11 @@ def search():
                 implement_table(stats)
                 # Display the hero data
                 print_hero_data(hero_data)
+                #creates tables
+                name_and_data(char_name, hero_data)
                 # Prompt for the next action
-                default_re_prompt()
+                table_options(char_name)
+                options()
             else:
                 # Prompts user to re-enter if no hero data is found
                 re_prompt()
@@ -243,7 +253,10 @@ def history_options():
 
     # Display default content
     print()
-    print(default_display())
+    if not is_database_empty("hero_data.db"):
+        print(default_display("hero_data.db"))
+    else:
+        print("No data available.")
     print()
 
     # Prompt user for history options
@@ -260,7 +273,11 @@ def history_options():
 
         if num == 1:
             # Display entire data
-            print(display_data())
+            if not is_database_empty("hero_data.db"):
+                print(display_data("hero_data.db"))
+            else:
+                print()
+                print("No data available.")
             options()
         elif num == 2:
             # Display specific hero data
@@ -268,13 +285,18 @@ def history_options():
             # Capitalize the first letter of each word of user input
             hero_name = input('\nEnter hero name: ')
             hero_name = string.capwords(hero_name)
-            display = display_hero_data(hero_name)
-            print(display)
+            if not is_database_empty("hero_data.db"):
+                display, value = display_hero_data(hero_name)
+                print(display)
+                if value:
+                    table_options(hero_name)  # do not print if the name is not valid
+            else:
+                print()
+                print("No data available.")
             options()
         elif num == 3:
-
-            # Clear history
-            print(clear_data())
+            print("History deleted successfully.  You are safe :) ")
+            drop_all_tables("hero_data.db")
             history_options()
         elif num == 4:
             # Go to main menu
